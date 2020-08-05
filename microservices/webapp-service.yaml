@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-webapp
+spec:
+  #defines which pods are represented by this service.
+  #service becomes network endpoint for other services or maybe external users to connect to
+  selector:
+    app: webapp
+  ports:
+    - name: http
+      port: 80
+      #nodePorts need to be > 30000 and is the port exposed to the outside world
+      nodePort: 30080
+  #NodePort is for exposing kube pod to outside world vs
+  #ClusterIp which is for internal services communicating with each other such as microservices
+  #inProd will replace NodePort with LoadBalancer once we deploy on the cloud
+  type: NodePort
