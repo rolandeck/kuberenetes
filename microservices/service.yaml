@@ -16,3 +16,17 @@ spec:
   #ClusterIp which is for internal services communicating with each other such as microservices
   #inProd will replace NodePort with LoadBalancer once we deploy on the cloud
   type: NodePort
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-queue
+spec:
+  selector:
+    app: queue
+  ports:
+    - name: http
+      port: 8161
+      nodePort: 30010
+  type: NodePort
