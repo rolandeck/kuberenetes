@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+spec:
+  minReadySeconds: 3
+  selector:
+    matchLabels:
+      app: mongodb
+  replicas: 1
+  template: #template for pods
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo:3.6.5-jessie
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-mongodb #this MUST line up with the path specified in the spring boot production.properties file which points to mongodb.default, etc.. path
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - name: mongoport
+      port: 27017
+  type: ClusterIP
