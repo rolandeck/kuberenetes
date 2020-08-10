@@ -1,0 +1,26 @@
+# localstorage - mongo-pvc
+apiVersion: v1
+kind: PersistentVolumeClaim #what we want
+metadata:
+  name: mongo-pvc
+spec:
+  storageClassName: mylocalstorage #searches persistentVolume defs for this matching class name, a.k.a "binding"
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi #search persistentVolume capacity defs for at least this amount (20Gi)
+---
+apiVersion: v1
+kind: PersistentVolume #how we want it implemented
+metadata:
+  name: local-storage
+spec:
+  storageClassName: mylocalstorage
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/db/data/"
+    type: DirectoryOrCreate
